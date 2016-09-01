@@ -56,7 +56,7 @@ function forge_custom_match_query() {
 <?php
 
   if ( $match_query->have_posts() ):
-    $comps = array();
+    $sports = array();
     $is_first_result = true;
 
     while ( $match_query->have_posts() ):
@@ -70,42 +70,63 @@ function forge_custom_match_query() {
       $post = get_the_ID();
       // Returns array($home, $away) where $home and $away are the teams' string labels
       $sides = (function_exists("wpcm_get_match_clubs"))? wpcm_get_match_clubs($post) : "empty_res";
-      // Returns array where [0] => full comp name, [1] => (colloquial?) label name
-      $comp = (function_exists("wpcm_get_match_comp"))? wpcm_get_match_comp($post) : "empty_res";
+      // Returns array($result, $home_goal, $away_goal, $delimiter) where $result is
+      // the full result string, $home_goal and $away_goal is self explanatory,
+      // $delimiter is the symbol separating the score
+      $score = (function_exists("wpcm_get_match_result"))? wpcm_get_match_result($post) : "empty_res";
+      // May break the date above down further for finer grain control by doing:
+      // $time = the_time('G:i')
+      //Date displayed like this: 27/8/16
+      $date = get_the_date('j/n/y', $post);
 
-      /** Experiment: MAY BREAK AT ANY TIME **/
-      $comp2 = get_the_terms($post, 'wpcm_comp');
-      if ( is_array($comp2) ) {
-        $comp_sport = $comp2[0]->parent;
+      // Largely based on `wpcm_get_match_comp` function in includes/wpcm-match-functions.php
+      $comp = get_the_terms($post, 'wpcm_comp');
+      if ( is_array($comp) ) {
+        $comp_sport = $comp[0]->parent;
         if ( $comp_sport ) {
           $comp_sport = get_term($comp_sport, 'wpcm_comp');
         }     
       }
-      if ($comp_sport) {
-        $comp_sport = $comp_sport->name;
-      }
-      // Returns array($result, $home_goal, $away_goal, $delimiter) where $result is the
-      // full result string, $home_goal and $away_goal is self explanatory, $delimiter
-      // is the symbol separating the score
-      $score = (function_exists("wpcm_get_match_result"))? wpcm_get_match_result($post) : "empty_res";
-      //Date displayed like this: August 27, 2016 15:00
-      // May break the date above down further for finer grain control by doing:
-      // $time = the_time('G:i')
-      $date = get_the_date('j/n/y', $post);
 
-      if ($is_first_result) {
+      if ($is_first_result)
           $is_first_result = false;
-      }
-      if ( !array_key_exists($comp[0], $comps) ):
-        $comps[$comp[0]] = true;
-        if (!$is_first_result) { // Not the first result
-          // So close the previous div before starting another for a different comp
-          echo "</div>";
-        }
+      
+      if ($comp_sport):
+        $comp_sport = $comp_sport->name;
+
+        if ( !array_key_exists($comp_sport, $sports) ):
+          $sports[$comp_sport] = true;
+          if (!$is_first_result) { // Not the first result
+            // So close the previous div before starting another for a different comp
+            echo "</div>";
+          }
 ?>
         <div class="forge-comp-results">
-          <div class="forge-comp-name"><?= $comp[1]; ?></div>
+          <div class="forge-comp-name"><?= $comp_sport; ?></div>
 <?php
+        endif;
+      else:
+      // Could have selected parent directly instead and not through the tedious
+      // process of creating EVERY competitions...
+        $comp_sport = $comp[0]->name;
+        if ( !array_key_exists($comp_sport, $sports) && $comp_sport !== "" ):
+          $sports[$comp_sport] = true;
+          if (!$is_first_result) { // Not the first result
+            // So close the previous div before starting another for a different comp
+            echo "</div>";
+          }
+?>
+        <div class="forge-comp-results">
+          <div class="forge-comp-name"><?= $comp_sport; ?></div> 
+<?php
+        else:
+          $sports["Miscellaneous"] = true;
+?>
+        <div class="forge-comp-results">
+          <div class="forge-comp-name">Miscellaneous</div> 
+<?php
+        endif;
+        // _forge_debug(array($comp, $comp_name));
       endif;
 ?>
       <div class="forge-single-result">
@@ -115,8 +136,8 @@ function forge_custom_match_query() {
         <span class="forge-away-team"><?= $sides[1]; ?></span>
       </div>
 <?php
-      _forge_debug(array($comp_sport));
     endwhile;
+    // _forge_debug(array($sports));
   else: ?>
     <p>No matches played yet. Come back and check again later!</p>
 <?php

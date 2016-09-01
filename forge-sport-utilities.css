@@ -1,0 +1,73 @@
+.forge-comp-results {
+  font-family: "Archivo Narrow", sans-serif;
+}
+
+.forge-comp-name {
+  background: #1e1e1e;
+  color: #fab123;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 10px 0 10px 15px;
+  border-top: 1px;
+  border-top-style: solid;
+  border-top-color: black;
+  border-bottom: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: black;
+}
+
+.forge-result-date {
+  padding: 0 10px;
+}
+
+.forge-single-result {
+  padding: 8px 0;
+}
+
+@media (max-width: 1000px) {
+  .forge-single-result {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+}
+
+.forge-home-team {
+  width: 110px;
+  display: inline-block;
+  text-align: right;
+  padding-right: 5px;
+}
+
+.forge-away-team {
+  padding-left: 5px;
+  display: inline-block;
+  width: 110px;
+}
+
+.forge-score-card {
+  background-color: #fab123;
+  color: #3e3e3e;
+  font-weight: bold;
+  display: inline-block;
+  width: 51px;
+  text-align: center;
+}
+
+@media (max-width: 375px) {
+  .forge-score-card {
+    height: 20px;
+  }
+}
+
+.forge-results-title {
+  font-family: "Archivo Narrow";
+  font-size: 17px;
+  background: #1e1e1e;
+  color: #fab123;
+  font-weight: 700;
+  padding: 10px 0 10px 15px;
+}
