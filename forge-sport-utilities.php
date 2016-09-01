@@ -1,15 +1,15 @@
 <?php
 /**
  * @package forge-sport-utilities
- * @version 3.0
+ * @version 3.2
  */
 /*
 Plugin Name: Forge Sport Utilities
-Plugin URI: http://www.forgetoday.com/tv/
+Plugin URI: https://github.com/darrenvong/FT-2016/forge-sport-utilities
 Description: A utility plugin that works with existing plugins to patch their shortcomings in order to 'make the Forge Sport website work'.
 Author: Darren Vong
-Version: 3.0
-Author URI: https://github.com/darrenvong/FT-2016/forge-sport-utilities
+Version: 3.2
+Author URI: https://github.com/darrenvong/
 */
 
 if ( !defined('ABSPATH') ) wp_die();
@@ -17,7 +17,7 @@ if ( !defined('ABSPATH') ) wp_die();
 add_action('do_meta_boxes', 'forge_remove_useless_metaboxes');
 function forge_remove_useless_metaboxes() {
   $pages_to_exclude = array('score', 'post', 'page');
-  if ( !current_user_can('install_plugins') ) {
+  if ( !current_user_can('install_plugins') ) { //Checks whether user is an admin
     remove_meta_box('postcustom', $pages_to_exclude, 'normal'); //Custom Fields
     remove_meta_box('eg-meta-box', $pages_to_exclude, 'normal'); //Essential Grid
     remove_meta_box('mymetabox_revslider_0', $pages_to_exclude, 'normal'); //Rev Slider 
@@ -124,6 +124,53 @@ function forge_custom_match_query() {
 
 add_shortcode('forge_print_results', 'forge_custom_match_query');
 
+/**
+ * Filter function to run through byline (if it exists) to ensure authors in the
+ * byline are displayed instead of the "author"/person who published the post.
+ * @param string $author_name - the publisher's name to filter
+ * @return the byline author names if exists, otherwise the publisher's name
+ */
+function forge_show_byline_author($author_name) {
+  if ( function_exists("byline") ) {
+    $name = byline($author_name);
+    $author_name = ($name)? $name : $author_name;
+    return $author_name;
+  }
+  else
+    return $author_name;
+}
+add_filter("the_author", "forge_show_byline_author");
+
+/**
+ * Custom query which fetches the win/draw/loss data of UoS's performance before outputting it under
+ * the right half of the header.
+ */
+function forge_custom_banner_query() {
+  $banner_query = new WP_Query(array('post_type' => 'banner'));
+  $field_data = array();
+  if ($banner_query->have_posts()):
+    while ($banner_query->have_posts()):
+      $banner_query->the_post();
+      $field_data['W'] = esc_html( do_shortcode('[ct id="_ct_text_57c8cfe6da990" property="value"]') ); //Win field
+      $field_data['D'] = esc_html( do_shortcode('[ct id="_ct_text_57c8d074955aa" property="value"]') ); //Draw field
+      $field_data['L'] = esc_html( do_shortcode('[ct id="_ct_text_57c8d0f4716d3" property="value"]') ); //Losses field
+      $banner_html = "<div class='uos-bucs'> UoS in BUCS: W{$field_data['W']}, D{$field_data['D']}, L{$field_data['L']}</div>";
+?>
+    <script>
+      // Annoying work around to force the banner inside the right header...
+      (function($) {
+        $(function() {
+          $(".header-right").append("<?=$banner_html;?>");
+        });
+      })(window.jQuery || $);
+    </script>
+<?php
+    endwhile;
+  endif;
+  wp_reset_postdata();
+}
+
+add_shortcode('forge_get_banner', 'forge_custom_banner_query');
 /**
  * Useful function for debugging
  * @param $vars - the variables information to print out
