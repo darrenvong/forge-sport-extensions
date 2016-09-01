@@ -1,14 +1,14 @@
 <?php
 /**
  * @package forge-sport-utilities
- * @version 2.0
+ * @version 3.0
  */
 /*
 Plugin Name: Forge Sport Utilities
 Plugin URI: http://www.forgetoday.com/tv/
 Description: A utility plugin that works with existing plugins to patch their shortcomings in order to 'make the Forge Sport website work'.
 Author: Darren Vong
-Version: 2.0
+Version: 3.0
 Author URI: https://github.com/darrenvong/FT-2016/forge-sport-utilities
 */
 
@@ -28,7 +28,8 @@ function forge_remove_useless_metaboxes() {
  * A custom query which fetches the latest five sport match results that Forge Sport
  * covers. Use the shortcode [forge_print_results] to display the contents.
  *
- * EXTRA NOTE TO SELF: useful files to look at in WP Club Manager:
+ * The implementation of the functionalities here were largely helped by the following
+ * files in WP Club Manager:
  * - includes/class-wpcm-widget-results.php
  * - templates/content-widget-results.php
  * - includes/wpcm-match-functions.php
@@ -91,43 +92,16 @@ function forge_custom_match_query() {
       if ($is_first_result)
           $is_first_result = false;
       
-      if ($comp_sport):
+      if ($comp_sport) {
         $comp_sport = $comp_sport->name;
-
-        if ( !array_key_exists($comp_sport, $sports) ):
-          $sports[$comp_sport] = true;
-          if (!$is_first_result) { // Not the first result
-            // So close the previous div before starting another for a different comp
-            echo "</div>";
-          }
-?>
-        <div class="forge-comp-results">
-          <div class="forge-comp-name"><?= $comp_sport; ?></div>
-<?php
-        endif;
-      else:
-      // Could have selected parent directly instead and not through the tedious
-      // process of creating EVERY competitions...
+        _print_new_section($comp_sport, $sports, $is_first_result);
+      }
+      else {
+      /** Could have selected parent directly instead and not through the tedious
+       * process of creating EVERY competitions... */
         $comp_sport = $comp[0]->name;
-        if ( !array_key_exists($comp_sport, $sports) && $comp_sport !== "" ):
-          $sports[$comp_sport] = true;
-          if (!$is_first_result) { // Not the first result
-            // So close the previous div before starting another for a different comp
-            echo "</div>";
-          }
-?>
-        <div class="forge-comp-results">
-          <div class="forge-comp-name"><?= $comp_sport; ?></div> 
-<?php
-        else:
-          $sports["Miscellaneous"] = true;
-?>
-        <div class="forge-comp-results">
-          <div class="forge-comp-name">Miscellaneous</div> 
-<?php
-        endif;
-        // _forge_debug(array($comp, $comp_name));
-      endif;
+        _print_new_section($comp_sport, $sports, $is_first_result);
+      }
 ?>
       <div class="forge-single-result">
         <span class="forge-result-date"><?= $date; ?></span>
@@ -137,7 +111,6 @@ function forge_custom_match_query() {
       </div>
 <?php
     endwhile;
-    // _forge_debug(array($sports));
   else: ?>
     <p>No matches played yet. Come back and check again later!</p>
 <?php
@@ -151,13 +124,55 @@ function forge_custom_match_query() {
 
 add_shortcode('forge_print_results', 'forge_custom_match_query');
 
+/**
+ * Useful function for debugging
+ * @param $vars - the variables information to print out
+ */
 function _forge_debug($vars) {
   echo "---------------------------------------------- <br>";
-  foreach ($vars as $var) {
-    var_dump($var);
+  if (is_array($vars)) {
+    foreach ($vars as $var) {
+      var_dump($var);
+      echo "<br>";
+    }    
+  }
+  else {
+    var_dump($vars);
     echo "<br>";
   }
   echo "---------------------------------------------- <br>";
+}
+
+/**
+ * Helper function for detecting when it is appropriate to begin a new sport
+ * section for the sidebar.
+ * @param $comp_sport - the name of the sport section
+ * @param &$sports - reference to the sport sections array used to keep track of
+ * whether the sport has already been seen. It's important that the $sports is a
+ * reference so that the changes made to $sports is reflected in the original array
+ * @param $is_first_result - boolean indicating whether this is the first sport result
+ * or not
+ */
+function _print_new_section($comp_sport, &$sports, $is_first_result) {
+  if ( !array_key_exists($comp_sport, $sports) ):
+    if ($comp_sport):
+      $sports[$comp_sport] = true;
+      if (!$is_first_result) { // Not the first result
+        // So close the previous div before starting another for a different comp
+        echo "</div>";
+      }
+?>
+    <div class="forge-comp-results">
+      <div class="forge-comp-name"><?= $comp_sport; ?></div> 
+<?php
+    else:
+      $sports["Miscellaneous"] = true;
+?>
+    <div class="forge-comp-results">
+      <div class="forge-comp-name">Miscellaneous</div> 
+<?php
+    endif;
+  endif;
 }
 
 ?>
