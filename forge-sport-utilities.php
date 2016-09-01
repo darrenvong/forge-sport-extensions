@@ -24,6 +24,16 @@ function forge_remove_useless_metaboxes() {
   }
 }
 
+/**
+ * A custom query which fetches the latest five sport match results that Forge Sport
+ * covers. Use the shortcode [forge_print_results] to display the contents.
+ *
+ * EXTRA NOTE TO SELF: useful files to look at in WP Club Manager:
+ * - includes/class-wpcm-widget-results.php
+ * - templates/content-widget-results.php
+ * - includes/wpcm-match-functions.php
+ * - includes/wpcm-template-hooks.php ?
+ */
 function forge_custom_match_query() {
   $limit = 5;
   $args = array(
@@ -36,19 +46,19 @@ function forge_custom_match_query() {
         'value' => true
       )
     ),
-    'posts_per_page' => $limit,
-    'tax_query' => array(
-      array(
-        'taxonomy' => 'wpcm_season',
-        'field' => 'slug',
-        'terms' => '2016-17'
-      )
-    )
+    'posts_per_page' => $limit
   );
 
   $match_query = new WP_Query($args);
+?>
+  <div class="layout-fix">
+    <div class="forge-results-title">Latest Results</div>
+<?php
 
   if ( $match_query->have_posts() ):
+    $comps = array();
+    $is_first_result = true;
+
     while ( $match_query->have_posts() ):
       $match_query->the_post();
 
@@ -62,18 +72,71 @@ function forge_custom_match_query() {
       $sides = (function_exists("wpcm_get_match_clubs"))? wpcm_get_match_clubs($post) : "empty_res";
       // Returns array where [0] => full comp name, [1] => (colloquial?) label name
       $comp = (function_exists("wpcm_get_match_comp"))? wpcm_get_match_comp($post) : "empty_res";
+
+      /** Experiment: MAY BREAK AT ANY TIME **/
+      $comp2 = get_the_terms($post, 'wpcm_comp');
+      if ( is_array($comp2) ) {
+        $comp_sport = $comp2[0]->parent;
+        if ( $comp_sport ) {
+          $comp_sport = get_term($comp_sport, 'wpcm_comp');
+        }     
+      }
+      if ($comp_sport) {
+        $comp_sport = $comp_sport->name;
+      }
       // Returns array($result, $home_goal, $away_goal, $delimiter) where $result is the
       // full result string, $home_goal and $away_goal is self explanatory, $delimiter
       // is the symbol separating the score
       $score = (function_exists("wpcm_get_match_result"))? wpcm_get_match_result($post) : "empty_res";
       //Date displayed like this: August 27, 2016 15:00
-      $date = get_the_date('F j, Y G:i', $post);
       // May break the date above down further for finer grain control by doing:
       // $time = the_time('G:i')
+      $date = get_the_date('j/n/y', $post);
+
+      if ($is_first_result) {
+          $is_first_result = false;
+      }
+      if ( !array_key_exists($comp[0], $comps) ):
+        $comps[$comp[0]] = true;
+        if (!$is_first_result) { // Not the first result
+          // So close the previous div before starting another for a different comp
+          echo "</div>";
+        }
+?>
+        <div class="forge-comp-results">
+          <div class="forge-comp-name"><?= $comp[1]; ?></div>
+<?php
+      endif;
+?>
+      <div class="forge-single-result">
+        <span class="forge-result-date"><?= $date; ?></span>
+        <span class="forge-home-team"><?= $sides[0]; ?></span>
+        <span class="forge-score-card"><?= $score[0]; ?></span>
+        <span class="forge-away-team"><?= $sides[1]; ?></span>
+      </div>
+<?php
+      _forge_debug(array($comp_sport));
     endwhile;
+  else: ?>
+    <p>No matches played yet. Come back and check again later!</p>
+<?php
   endif;
 
   wp_reset_postdata();
+?>
+    </div> <!-- Closes the last competition level div -->
+<?php
 }
 
 add_shortcode('forge_print_results', 'forge_custom_match_query');
+
+function _forge_debug($vars) {
+  echo "---------------------------------------------- <br>";
+  foreach ($vars as $var) {
+    var_dump($var);
+    echo "<br>";
+  }
+  echo "---------------------------------------------- <br>";
+}
+
+?>
