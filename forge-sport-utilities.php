@@ -16,7 +16,7 @@ if ( !defined('ABSPATH') ) wp_die();
 
 add_action('do_meta_boxes', 'forge_remove_useless_metaboxes');
 function forge_remove_useless_metaboxes() {
-  $pages_to_exclude = array('score', 'post', 'page');
+  $pages_to_exclude = array('banner', 'post', 'page');
   if ( !current_user_can('install_plugins') ) { //Checks whether user is an admin
     remove_meta_box('postcustom', $pages_to_exclude, 'normal'); //Custom Fields
     remove_meta_box('eg-meta-box', $pages_to_exclude, 'normal'); //Essential Grid
