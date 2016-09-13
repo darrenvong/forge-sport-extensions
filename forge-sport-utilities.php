@@ -65,8 +65,8 @@ function forge_custom_match_query() {
 
       /**
         * N.B.: whilst some results returned below are labelled with var names, they
-        * CANNOT actually be used - it is there for clarity. Use array indexes to access
-        * them instead!
+        * CANNOT actually be used - it is there for clarity. Use array indexes to
+        * access them instead!
         */
       $post = get_the_ID();
       // Returns array($home, $away) where $home and $away are the teams' string labels
@@ -154,7 +154,7 @@ function forge_custom_banner_query() {
       $field_data['W'] = esc_html( do_shortcode('[ct id="_ct_text_57c8cfe6da990" property="value"]') ); //Win field
       $field_data['D'] = esc_html( do_shortcode('[ct id="_ct_text_57c8d074955aa" property="value"]') ); //Draw field
       $field_data['L'] = esc_html( do_shortcode('[ct id="_ct_text_57c8d0f4716d3" property="value"]') ); //Losses field
-      $banner_html = "<div class='uos-bucs'> UoS in BUCS: W{$field_data['W']}, D{$field_data['D']}, L{$field_data['L']}</div>";
+      $banner_html = "<div class='uos-bucs'> UoS in BUCS: Win {$field_data['W']}, Draw {$field_data['D']}, Lost {$field_data['L']}</div>";
 ?>
     <script>
       // Annoying work around to force the banner inside the right header...
