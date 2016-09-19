@@ -16,6 +16,7 @@ the metaboxes currently removed for non-admins are:
 to utilise the niceties of the WP Club Manager plugin to manage sport scores,
 whilst at the same time plugs (no puns intended) the limitations of the plugin
 which only makes the results of one "home team" displayable.
+  * _(since Version 3.3)_ an external link to the relevant match report can now be added via the match result post content
 
 * Bootstrap the byline filter to run on the_author hook so that the correct author
 name is displayed when they are added on the byline by an editor

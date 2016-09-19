@@ -1,14 +1,14 @@
 <?php
 /**
  * @package forge-sport-utilities
- * @version 3.2
+ * @version 3.3
  */
 /*
 Plugin Name: Forge Sport Utilities
-Plugin URI: https://github.com/darrenvong/FT-2016/forge-sport-utilities
+Plugin URI: https://github.com/darrenvong/forge-sport-utilities
 Description: A utility plugin that works with existing plugins to patch their shortcomings in order to 'make the Forge Sport website work'.
 Author: Darren Vong
-Version: 3.2
+Version: 3.3
 Author URI: https://github.com/darrenvong/
 */
 
@@ -70,11 +70,11 @@ function forge_custom_match_query() {
         */
       $post = get_the_ID();
       // Returns array($home, $away) where $home and $away are the teams' string labels
-      $sides = (function_exists("wpcm_get_match_clubs"))? wpcm_get_match_clubs($post) : "empty_res";
+      $sides = (function_exists("wpcm_get_match_clubs"))? wpcm_get_match_clubs($post) : array("Home Team", "Away Team");
       // Returns array($result, $home_goal, $away_goal, $delimiter) where $result is
       // the full result string, $home_goal and $away_goal is self explanatory,
       // $delimiter is the symbol separating the score
-      $score = (function_exists("wpcm_get_match_result"))? wpcm_get_match_result($post) : "empty_res";
+      $score = (function_exists("wpcm_get_match_result"))? wpcm_get_match_result($post) : array("0 - 0");
       // May break the date above down further for finer grain control by doing:
       // $time = the_time('G:i')
       //Date displayed like this: 27/8/16
@@ -106,7 +106,15 @@ function forge_custom_match_query() {
       <div class="forge-single-result">
         <span class="forge-result-date"><?= $date; ?></span>
         <span class="forge-home-team"><?= $sides[0]; ?></span>
-        <span class="forge-score-card"><?= $score[0]; ?></span>
+<?php
+        if ($post_url = get_the_content()):
+?>
+          <a href="<?= esc_url( $post_url ); ?>">
+            <span class="forge-score-card"><?= $score[0]; ?></span>
+          </a>
+<?php   else: ?>
+          <span class="forge-score-card"><?= $score[0]; ?></span>
+<?php   endif; ?>
         <span class="forge-away-team"><?= $sides[1]; ?></span>
       </div>
 <?php
