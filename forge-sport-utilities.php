@@ -104,18 +104,16 @@ function forge_custom_match_query() {
       }
 ?>
       <div class="forge-single-result">
-        <span class="forge-result-date"><?= $date; ?></span>
-        <span class="forge-home-team"><?= $sides[0]; ?></span>
 <?php
-        if ($post_url = get_the_content()):
-?>
+      // Include a clickable link if provided  
+      if ($post_url = get_the_content()): ?>
           <a href="<?= esc_url( $post_url ); ?>">
-            <span class="forge-score-card"><?= $score[0]; ?></span>
-          </a>
-<?php   else: ?>
-          <span class="forge-score-card"><?= $score[0]; ?></span>
 <?php   endif; ?>
-        <span class="forge-away-team"><?= $sides[1]; ?></span>
+            <span class="forge-result-date"><?= $date; ?></span>
+            <span class="forge-home-team"><?= $sides[0]; ?></span>
+            <span class="forge-score-card"><?= $score[0]; ?></span>
+            <span class="forge-away-team"><?= $sides[1]; ?></span>
+<?php   if ( $post_url ): ?> </a> <?php endif; ?>
       </div>
 <?php
     endwhile;
@@ -159,16 +157,30 @@ function forge_custom_banner_query() {
   if ($banner_query->have_posts()):
     while ($banner_query->have_posts()):
       $banner_query->the_post();
-      $field_data['W'] = esc_html( do_shortcode('[ct id="_ct_text_57c8cfe6da990" property="value"]') ); //Win field
-      $field_data['D'] = esc_html( do_shortcode('[ct id="_ct_text_57c8d074955aa" property="value"]') ); //Draw field
+      $field_data['W'] = esc_html( do_shortcode('[ct id="_ct_text_57c8cfe6da990" property="value"]') ); //Wins field
+      $field_data['D'] = esc_html( do_shortcode('[ct id="_ct_text_57c8d074955aa" property="value"]') ); //Draws field
       $field_data['L'] = esc_html( do_shortcode('[ct id="_ct_text_57c8d0f4716d3" property="value"]') ); //Losses field
+      $field_data['I'] = do_shortcode('[ct id="_ct_upload_57e29ab501d0e" property="value"]'); // Logo image upload field
       $banner_html = "<div class='uos-bucs'> UoS in BUCS: Win {$field_data['W']}, Draw {$field_data['D']}, Lost {$field_data['L']}</div>";
 ?>
+    <div class="uos-bucs hidden">
+      <span id="uni-crest">
+        <?= $field_data["I"] ?>
+        in BUCS: 
+      </span>
+      <span id="uni-stats">
+        <div id="wins"><span class="stat-label">Wins</span><span class="score"><?= $field_data['W']; ?></span></div>
+        <div id="draws"><span class="stat-label">Draws</span><span class="score"><?= $field_data['D']; ?></span></div>
+        <div id="losses"><span class="stat-label">Losses</span><span class="score"><?= $field_data['L']; ?></span></div>        
+      </span>
+    </div>
     <script>
       // Annoying work around to force the banner inside the right header...
       (function($) {
         $(function() {
-          $(".header-right").append("<?=$banner_html;?>");
+          var banner = $("div.uos-bucs");
+          $(".header-right").append(banner);
+          banner.removeClass("hidden");
         });
       })(window.jQuery || $);
     </script>

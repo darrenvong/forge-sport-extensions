@@ -1,73 +1,164 @@
-.forge-comp-results {
-  font-family: "Archivo Narrow", sans-serif;
+/********** Top Bar Stylings **********/
+.uos-bucs {
+    background-color: #fab123;
+    background: -moz-linear-gradient(rgba(255,141,5,0.6), #fab123 15%, rgba(255,141,5,0.6) 96%);
+    background: -o-linear-gradient(rgba(255,141,5,0.6), #fab123 15%, rgba(255,141,5,0.6) 96%);
+    background: -webkit-linear-gradient(rgba(255,141,5,0.6), #fab123 15%, rgba(255,141,5,0.6) 96%);
+    background: linear-gradient(rgba(255,141,5,0.6), #fab123 15%, rgba(255,141,5,0.6) 96%);
+    color: black;
+    font-weight: 800;
+    font-family: 'Open Sans';
+    font-size: 25px;
 }
 
-.forge-comp-name {
-  background: #1e1e1e;
-  color: #fab123;
-  font-weight: 700;
-  font-size: 18px;
-  padding: 10px 0 10px 15px;
-  border-top: 1px;
-  border-top-style: solid;
-  border-top-color: black;
-  border-bottom: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: black;
-}
-
-.forge-result-date {
-  padding: 0 10px;
-}
-
-.forge-single-result {
-  padding: 8px 0;
+div.logo {
+    width: 25%;
 }
 
 @media (max-width: 1000px) {
-  .forge-single-result {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-  }
+    div.header-right {
+        float: none;
+        margin: 0 auto;
+    }
+    .uos-bucs {
+        margin: 10px 20px;
+        /* font-size: 25px; */
+        text-align: center;
+    }
+}
+
+@media (max-width: 450px) {
+    .uos-bucs {
+        font-size: 15px;
+    }
+}
+/********** END Top Bar Stylings **********/
+
+/********** Latest Results sidebar stylings ***********/
+.forge-comp-results {
+    font-family: "Archivo Narrow", sans-serif;
+}
+
+.forge-comp-name {
+    background: #1e1e1e;
+    color: #fab123;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 10px 0 10px 15px;
+    border-top: 1px;
+    border-top-style: solid;
+    border-top-color: black;
+    border-bottom: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: black;
+}
+
+.forge-result-date {
+    padding: 0 10px;
+    display: inline-block;
+    width: 43px;
+}
+
+.forge-single-result {
+    padding: 8px 0;
+}
+
+.forge-single-result a:hover {
+    color: #ededed;
+}
+
+@media (max-width: 1000px) {
+    .forge-single-result {
+        text-align: center;
+    }
 }
 
 .forge-home-team {
-  width: 110px;
-  display: inline-block;
-  text-align: right;
-  padding-right: 5px;
+    width: 110px;
+    display: inline-block;
+    text-align: right;
+    padding-right: 5px;
 }
 
 .forge-away-team {
-  padding-left: 5px;
-  display: inline-block;
-  width: 110px;
+    padding-left: 5px;
+    display: inline-block;
+    text-align: left;
+    width: 110px;
 }
 
 .forge-score-card {
-  background-color: #fab123;
-  color: #3e3e3e;
-  font-weight: bold;
-  display: inline-block;
-  width: 51px;
-  text-align: center;
+    background-color: #fab123;
+    color: #3e3e3e;
+    font-weight: bold;
+    display: inline-block;
+    width: 51px;
+    text-align: center;
 }
 
 @media (max-width: 375px) {
-  .forge-score-card {
-    height: 20px;
-  }
+    .forge-score-card {
+        height: 20px;
+    }
+    
+    .forge-result-date {
+        padding: 0;
+    }
 }
 
 .forge-results-title {
-  font-family: "Archivo Narrow";
-  font-size: 17px;
-  background: #1e1e1e;
-  color: #fab123;
-  font-weight: 700;
-  padding: 10px 0 10px 15px;
+    font-family: "Archivo Narrow";
+    font-size: 17px;
+    background: #1e1e1e;
+    color: #fab123;
+    font-weight: 700;
+    padding: 10px 0 10px 15px;
+}
+/********** END latest results sidebar styling **********/
+
+/** Pagination button styling tweaks **/
+div.esg-navigationbutton,
+.esg-pagination-button,
+.esg-pagination-button.selected,
+.esg-navigationbutton.esg-left,
+.esg-navigationbutton.esg-right {
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+    color: #999 !important;
+}
+
+div.esg-navigationbutton:hover,
+.esg-pagination-button:hover,
+.esg-pagination-button.selected:hover,
+.esg-navigationbutton.esg-left:hover,
+.esg-navigationbutton.esg-right:hover {
+    background-color: #fab123 !important;
+    border-color: #fab123 !important;
+    color: black !important;
+}
+
+/* Show only 3 nav page number buttons at most on very small screens */
+@media (max-width: 425px) {
+    .esg-pagination div:nth-child(n+4) {
+        display: none !important;
+    }
+}
+
+/** Blank author cover height fix **/
+.author-cover {
+    height: 142px;
+}
+
+/* Scales image rather than me having to do it manually... */
+.logo a img {
+    width: 90%;
+}
+
+/* Thumbnail BG colour fix */
+.entry-content .post-thumbnail {
+    background-color: transparent;
+}
+
+.hidden {
+    display: none;
 }
