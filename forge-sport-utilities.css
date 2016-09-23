@@ -34,6 +34,116 @@ div.logo {
 }
 /********** END Top Bar Stylings **********/
 
+/********** NEW Top Bar Stylings **********/
+.uos-bucs {
+    height: 130px;
+    width: 100%;
+    position: relative;
+    margin: 25px 0;
+    background-color: #fab123;
+    background: -moz-linear-gradient(rgba(255,141,5,0.6), #fab123 15%, rgba(255,141,5,0.6) 96%);
+    background: -o-linear-gradient(rgba(255,141,5,0.6), #fab123 15%, rgba(255,141,5,0.6) 96%);
+    background: -webkit-linear-gradient(rgba(255,141,5,0.6), #fab123 15%, rgba(255,141,5,0.6) 96%);
+    background: linear-gradient(rgba(255,141,5,0.6), #fab123 15%, rgba(255,141,5,0.6) 96%);
+    color: black;
+    font-weight: 800;
+    font-family: 'Open Sans';
+    font-size: 30px;
+}
+
+div.logo {
+    width: 25%;
+}
+
+#uni-crest img {
+    width: 35%;
+}
+
+#uni-crest, #uni-stats {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#uni-crest {
+    left: 5px;
+}
+
+#uni-stats {
+    right: 50px;
+}
+
+.header-right {
+    width: 50%;
+}
+
+.stat-label {
+    display: inline-block;
+    width: 105px;
+}
+
+.score {
+    text-align: center;
+    display: inline-block;
+    width: 52px;
+}
+
+@media (max-width: 1000px) {
+    div.header-right {
+        float: none;
+        margin: 0 auto;
+        width: auto;
+    }
+    
+    .uos-bucs {
+        margin: 15px auto -15px;
+        text-align: center;
+    }
+    
+    #uni-crest {
+        left: -5px;
+    }
+    
+    .stat-label {
+        text-align: left;
+    }
+}
+
+@media (max-width: 568px) {
+    .uos-bucs {
+        font-size: 24px;
+    }
+    
+    #uni-crest {
+        left: -30px;
+    }
+    
+    #uni-stats {
+        right: 20px;
+    }
+    
+    .stat-label {
+        width: 83px;
+    }
+}
+
+@media (max-width: 450px) {
+    .uos-bucs {
+        font-size: 16px;
+    }
+    
+    .stat-label {
+        width: 55px;
+    }
+
+    .score {
+        width: 30px;
+    }
+}
+/********** END NEW Top Bar Stylings **********/
+
+
 /********** Latest Results sidebar stylings ***********/
 .forge-comp-results {
     font-family: "Archivo Narrow", sans-serif;
