@@ -26,7 +26,8 @@ function forge_remove_useless_metaboxes() {
 
 
 function forge_enqueue_object_fit_polyfill() {
-  wp_enqueue_script('object-fit-polyfill', plugin_dir_url(__FILE__) . 'js/ofi.browser.js');
+  if ( is_page('get-involved') )
+    wp_enqueue_script('object-fit-polyfill', plugin_dir_url(__FILE__) . 'js/ofi.browser.js');
 }
 add_action('wp_enqueue_scripts', 'forge_enqueue_object_fit_polyfill');
 

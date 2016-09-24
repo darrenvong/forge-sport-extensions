@@ -1,0 +1,109 @@
+/* Page title font colour fix */
+.mom-page-title h1 { color: #fab123; }
+
+/********** Top Bar Stylings **********/
+.uos-bucs { height: 130px; width: 100%; position: relative; margin: 25px 0; color: black; font-weight: 800; font-family: 'Open Sans'; font-size: 30px; }
+
+div.logo { width: 25%; }
+
+#uni-crest img { width: 35%; }
+
+#uni-crest, #uni-stats { display: inline-block; position: absolute; top: 50%; transform: translateY(-50%); }
+
+#uni-crest { left: 5px; color: #fab123; }
+
+#uni-stats { background-color: #fab123; background: -moz-linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%); background: -o-linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%); background: -webkit-linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%); background: linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%); right: 50px; padding-left: 10px; }
+
+.header-right { width: 50%; }
+
+.stat-label { display: inline-block; width: 105px; }
+
+.score { text-align: center; display: inline-block; width: 52px; }
+
+@media (min-width: 1166px) { #uni-crest { left: 50px; } }
+@media (max-width: 1000px) { div.header-right { float: none; margin: 0 auto; width: auto; }
+  .uos-bucs { margin: 15px auto -15px; text-align: center; }
+  #uni-crest { left: -5px; }
+  .stat-label { text-align: left; } }
+@media (max-width: 568px) { .uos-bucs { font-size: 24px; }
+  #uni-crest { left: -30px; }
+  #uni-stats { right: 20px; }
+  .stat-label { width: 83px; } }
+@media (max-width: 450px) { .uos-bucs { font-size: 16px; }
+  .stat-label { width: 55px; }
+  .score { width: 30px; } }
+/********** END Top Bar Stylings **********/
+/********** Latest Results sidebar stylings ***********/
+.forge-comp-results { font-family: "Archivo Narrow", sans-serif; }
+
+.forge-comp-name { background: #1e1e1e; color: #fab123; font-weight: 700; font-size: 18px; padding: 10px 0 10px 15px; border-top: 1px; border-top-style: solid; border-top-color: black; border-bottom: 1px; border-bottom-style: solid; border-bottom-color: black; }
+
+.forge-result-date { padding: 0 10px; display: inline-block; width: 43px; }
+
+.forge-single-result { padding: 8px 0; }
+
+.forge-single-result a:hover { color: #ededed; }
+
+@media (max-width: 1000px) { .forge-single-result { text-align: center; } }
+.forge-home-team { width: 110px; display: inline-block; text-align: right; padding-right: 5px; }
+
+.forge-away-team { padding-left: 5px; display: inline-block; text-align: left; width: 110px; }
+
+.forge-score-card { background-color: #fab123; color: #3e3e3e; font-weight: bold; display: inline-block; width: 51px; text-align: center; }
+
+@media (max-width: 375px) { .forge-score-card { height: 20px; }
+  .forge-result-date { padding: 0; } }
+.forge-results-title { font-family: "Archivo Narrow"; font-size: 17px; background: #1e1e1e; color: #fab123; font-weight: 700; padding: 10px 0 10px 15px; }
+
+/********** END latest results sidebar styling **********/
+/** Pagination button styling tweaks **/
+div.esg-navigationbutton, .esg-pagination-button, .esg-pagination-button.selected, .esg-navigationbutton.esg-left, .esg-navigationbutton.esg-right { background-color: #000000 !important; border-color: #000000 !important; color: #999 !important; }
+
+div.esg-navigationbutton:hover, .esg-pagination-button:hover, .esg-pagination-button.selected:hover, .esg-navigationbutton.esg-left:hover, .esg-navigationbutton.esg-right:hover { background-color: #fab123 !important; border-color: #fab123 !important; color: black !important; }
+
+/* Show only 3 nav page number buttons at most on very small screens */
+@media (max-width: 425px) { .esg-pagination div:nth-child(n+4) { display: none !important; } }
+/** Blank author cover height fix **/
+.author-cover { height: 142px; }
+
+/* Scales image rather than me having to do it manually... */
+.logo a img { width: 90%; }
+
+/* Thumbnail BG colour fix */
+.entry-content .post-thumbnail { background-color: transparent; }
+
+.hidden { display: none; }
+
+/** Get Involved Page styling **/
+.contact-email { font-weight: 600; color: #fab123; }
+
+.contact-email:hover { text-decoration: underline; }
+
+.so-widget-sow-image div.sow-image-container img.so-widget-image { width: 300px; height: 300px; -o-object-fit: cover; object-fit: cover; }
+
+/** END of Get Involved Page styling **/
+td, th { border: 1px solid #000000; padding: 2px; text-align: center; }
+
+.column-left { float: left; width: 45%; }
+
+.column-right { float: right; width: 45%; }
+
+.column-center { display: inline-block; width: 10%; }
+
+.uni-full { height: 40px; background-color: #fac123; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 120%; color: #000000; text-align: center; line-height: 40px; }
+
+.uni-half { height: 20px; background-color: #fac123; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 80%; color: #000000; text-align: center; line-height: 20px; }
+
+.hallam-full { height: 40px; background-color: #840e1f; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 120%; color: #e1e1e1; text-align: center; line-height: 40px; }
+
+.hallam-half { height: 20px; background-color: #840e1f; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 80%; color: #e1e1e1; text-align: center; line-height: 20px; }
+
+.toplay { height: 20px; background-color: #929292; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 100%; color: #000000; text-align: center; line-height: 20px; }
+
+.instructions { clear: both; font-family: Arial, Helvetica, sans-serif; font-size: 100%; color: #e1e1e1; text-align: center; }
+
+.gap { height: 40px; }
+
+a img.byline, img.byline { float: left; margin-bottom: 0.5em; margin-left: 0; margin-right: 0.7em; margin-top: 0; }
+
+/*# sourceMappingURL=forge-sport.css.map */
