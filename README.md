@@ -23,3 +23,5 @@ name is displayed when they are added on the byline by an editor
 
 * Dynamically fetches the data input from the banner post to display a banner reflecting UoS
 BUCS performance 
+
+* 'object-fit' CSS property polyfill (used on the "Get Involved" page) for older browsers

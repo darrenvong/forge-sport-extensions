@@ -1,14 +1,14 @@
 <?php
 /**
  * @package forge-sport-utilities
- * @version 3.3
+ * @version 3.3.1
  */
 /*
 Plugin Name: Forge Sport Utilities
 Plugin URI: https://github.com/darrenvong/forge-sport-utilities
 Description: A utility plugin that works with existing plugins to patch their shortcomings in order to 'make the Forge Sport website work'.
 Author: Darren Vong
-Version: 3.3
+Version: 3.3.1
 Author URI: https://github.com/darrenvong/
 */
 
@@ -23,6 +23,12 @@ function forge_remove_useless_metaboxes() {
     remove_meta_box('mymetabox_revslider_0', $pages_to_exclude, 'normal'); //Rev Slider 
   }
 }
+
+
+function forge_enqueue_object_fit_polyfill() {
+  wp_enqueue_script('object-fit-polyfill', plugin_dir_url(__FILE__) . 'js/ofi.browser.js');
+}
+add_action('wp_enqueue_scripts', 'forge_enqueue_object_fit_polyfill');
 
 /**
  * A custom query which fetches the latest five sport match results that Forge Sport
@@ -152,7 +158,12 @@ add_filter("the_author", "forge_show_byline_author");
  * the right half of the header.
  */
 function forge_custom_banner_query() {
-  $banner_query = new WP_Query(array('post_type' => 'banner'));
+  $banner_query = new WP_Query(
+    array(
+      'post_type' => 'banner',
+      'numberposts' => 1
+    )
+  );
   $field_data = array();
   if ($banner_query->have_posts()):
     while ($banner_query->have_posts()):
