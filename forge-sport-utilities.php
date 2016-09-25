@@ -76,6 +76,7 @@ function forge_custom_match_query() {
         * access them instead!
         */
       $post = get_the_ID();
+
       // Returns array($home, $away) where $home and $away are the teams' string labels
       $sides = (function_exists("wpcm_get_match_clubs"))? wpcm_get_match_clubs($post) : array("Home Team", "Away Team");
       // Returns array($result, $home_goal, $away_goal, $delimiter) where $result is
@@ -101,13 +102,13 @@ function forge_custom_match_query() {
       
       if ($comp_sport) {
         $comp_sport = $comp_sport->name;
-        _print_new_section($comp_sport, $sports, $is_first_result);
+        // _print_new_section($comp_sport, $sports, $is_first_result);
       }
       else {
       /** Could have selected parent directly instead and not through the tedious
        * process of creating EVERY competitions... */
         $comp_sport = $comp[0]->name;
-        _print_new_section($comp_sport, $sports, $is_first_result);
+        // _print_new_section($comp_sport, $sports, $is_first_result);
       }
 ?>
       <div class="forge-single-result">
@@ -136,6 +137,39 @@ function forge_custom_match_query() {
 }
 
 add_shortcode('forge_print_results', 'forge_custom_match_query');
+
+/**
+ * Helper function for detecting when it is appropriate to begin a new sport
+ * section for the sidebar.
+ * @param $comp_sport - the name of the sport section
+ * @param &$sports - reference to the sport sections array used to keep track of
+ * whether the sport has already been seen. It's important that the $sports is a
+ * reference so that the changes made to $sports is reflected in the original array
+ * @param $is_first_result - boolean indicating whether this is the first sport result
+ * or not
+ */
+function _print_new_section($comp_sport, &$sports, $is_first_result) {
+  if ( !array_key_exists($comp_sport, $sports) ): // New sport encountered 
+    if ($comp_sport):
+      // sport/comp name is not the empty string, so add to sports array  
+      $sports[$comp_sport] = true;
+      if (!$is_first_result) { // Not the first result
+        // So close the previous div before starting another for a different comp
+        echo "</div>";
+      }
+?>
+    <div class="forge-comp-results">
+      <div class="forge-comp-name"><?= $comp_sport; ?></div> 
+<?php
+    else:
+      $sports["Miscellaneous"] = true;
+?>
+    <div class="forge-comp-results">
+      <div class="forge-comp-name">Miscellaneous</div> 
+<?php
+    endif;
+  endif;
+}
 
 /**
  * Filter function to run through byline (if it exists) to ensure authors in the
@@ -203,6 +237,7 @@ function forge_custom_banner_query() {
 }
 
 add_shortcode('forge_get_banner', 'forge_custom_banner_query');
+
 /**
  * Useful function for debugging
  * @param $vars - the variables information to print out
@@ -220,38 +255,6 @@ function _forge_debug($vars) {
     echo "<br>";
   }
   echo "---------------------------------------------- <br>";
-}
-
-/**
- * Helper function for detecting when it is appropriate to begin a new sport
- * section for the sidebar.
- * @param $comp_sport - the name of the sport section
- * @param &$sports - reference to the sport sections array used to keep track of
- * whether the sport has already been seen. It's important that the $sports is a
- * reference so that the changes made to $sports is reflected in the original array
- * @param $is_first_result - boolean indicating whether this is the first sport result
- * or not
- */
-function _print_new_section($comp_sport, &$sports, $is_first_result) {
-  if ( !array_key_exists($comp_sport, $sports) ):
-    if ($comp_sport):
-      $sports[$comp_sport] = true;
-      if (!$is_first_result) { // Not the first result
-        // So close the previous div before starting another for a different comp
-        echo "</div>";
-      }
-?>
-    <div class="forge-comp-results">
-      <div class="forge-comp-name"><?= $comp_sport; ?></div> 
-<?php
-    else:
-      $sports["Miscellaneous"] = true;
-?>
-    <div class="forge-comp-results">
-      <div class="forge-comp-name">Miscellaneous</div> 
-<?php
-    endif;
-  endif;
 }
 
 ?>
