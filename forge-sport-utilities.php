@@ -1,14 +1,14 @@
 <?php
 /**
  * @package forge-sport-utilities
- * @version 3.3.1
+ * @version 3.4
  */
 /*
 Plugin Name: Forge Sport Utilities
 Plugin URI: https://github.com/darrenvong/forge-sport-utilities
 Description: A utility plugin that works with existing plugins to patch their shortcomings in order to 'make the Forge Sport website work'.
 Author: Darren Vong
-Version: 3.3.1
+Version: 3.4
 Author URI: https://github.com/darrenvong/
 */
 
@@ -62,10 +62,10 @@ function forge_custom_match_query() {
   <div class="layout-fix">
     <div class="forge-results-title">Latest Results</div>
 <?php
-
+  // Process the results in the loop first
   if ( $match_query->have_posts() ):
     $sports = array();
-    $is_first_result = true;
+    $counter = 0;
 
     while ( $match_query->have_posts() ):
       $match_query->the_post();
@@ -78,11 +78,11 @@ function forge_custom_match_query() {
       $post = get_the_ID();
 
       // Returns array($home, $away) where $home and $away are the teams' string labels
-      $sides = (function_exists("wpcm_get_match_clubs"))? wpcm_get_match_clubs($post) : array("Home Team", "Away Team");
+      $sides = ( function_exists("wpcm_get_match_clubs") )? wpcm_get_match_clubs($post) : array("Home Team", "Away Team");
       // Returns array($result, $home_goal, $away_goal, $delimiter) where $result is
       // the full result string, $home_goal and $away_goal is self explanatory,
       // $delimiter is the symbol separating the score
-      $score = (function_exists("wpcm_get_match_result"))? wpcm_get_match_result($post) : array("0 - 0");
+      $score = ( function_exists("wpcm_get_match_result") )? wpcm_get_match_result($post) : array("0 - 0");
       // May break the date above down further for finer grain control by doing:
       // $time = the_time('G:i')
       //Date displayed like this: 27/8/16
@@ -90,86 +90,73 @@ function forge_custom_match_query() {
 
       // Largely based on `wpcm_get_match_comp` function in includes/wpcm-match-functions.php
       $comp = get_the_terms($post, 'wpcm_comp');
-      if ( is_array($comp) ) {
-        $comp_sport = $comp[0]->parent;
-        if ( $comp_sport ) {
-          $comp_sport = get_term($comp_sport, 'wpcm_comp');
-        }     
-      }
-
-      if ($is_first_result)
-          $is_first_result = false;
       
-      if ($comp_sport) {
-        $comp_sport = $comp_sport->name;
-        // _print_new_section($comp_sport, $sports, $is_first_result);
+      $comp_sport = $comp[0]->name;
+
+      if ( $comp_sport ) {
+        /* Name is not the empty string, so use it as a key for looking up results
+         * in the sport */
+        $sports[$comp_sport][$counter] = array(
+          "home_team" => $sides[0],
+          "away_team" => $sides[1],
+          "score" => $score[0],
+          "date" => $date
+        );
+        if ( $post_url = get_the_content() ) {
+          $sports[$comp_sport][$counter]["link"] = esc_url($post_url);
+        }
       }
       else {
-      /** Could have selected parent directly instead and not through the tedious
-       * process of creating EVERY competitions... */
-        $comp_sport = $comp[0]->name;
-        // _print_new_section($comp_sport, $sports, $is_first_result);
+        /* Empty string sport, so rather than displaying a blank box, defaults
+         * to "Miscellaneous" instead */
+        $sports["Miscellaneous"][$counter] = array(
+          "home_team" => $sides[0],
+          "away_team" => $sides[1],
+          "score" => $score[0],
+          "date" => $date
+        );
+        if ( $post_url = get_the_content() ) {
+          $sports["Miscellaneous"][$counter]["link"] = esc_url($post_url);
+        }
       }
-?>
-      <div class="forge-single-result">
-<?php
-      // Include a clickable link if provided  
-      if ($post_url = get_the_content()): ?>
-          <a href="<?= esc_url( $post_url ); ?>">
-<?php   endif; ?>
-            <span class="forge-result-date"><?= $date; ?></span>
-            <span class="forge-home-team"><?= $sides[0]; ?></span>
-            <span class="forge-score-card"><?= $score[0]; ?></span>
-            <span class="forge-away-team"><?= $sides[1]; ?></span>
-<?php   if ( $post_url ): ?> </a> <?php endif; ?>
-      </div>
-<?php
+      $counter++;
     endwhile;
+  endif;
+
+  wp_reset_postdata();
+
+  //Now output everything
+  if ( $sports ):
+    foreach ($sports as $sport => $results):
+?>
+      <div class="forge-comp-results">
+        <div class="forge-comp-name"><?= $sport; ?></div>
+<?php
+      foreach ($results as $result):
+?>
+        <div class="forge-single-result">
+<?php     if ( array_key_exists("link", $result) ): ?>
+            <a href="<?= $result["link"] ?>">
+<?php     endif; ?>
+          <span class="forge-result-date"><?= $result["date"] ?></span>
+          <span class="forge-home-team"><?= $result["home_team"] ?></span>
+          <span class="forge-score-card"><?= $result["score"] ?></span>
+          <span class="forge-away-team"><?= $result["away_team"] ?></span>
+<?php     if ( array_key_exists("link", $result) ) { echo "</a>"; } ?>
+        </div>
+<?php
+      endforeach;
+?>
+      </div> <!-- end of comp section -->
+<?php
+    endforeach;
   else: ?>
     <p>No matches played yet. Come back and check again later!</p>
 <?php
   endif;
-
-  wp_reset_postdata();
-?>
-    </div> <!-- Closes the last competition level div -->
-<?php
 }
 
 add_shortcode('forge_print_results', 'forge_custom_match_query');
-
-/**
- * Helper function for detecting when it is appropriate to begin a new sport
- * section for the sidebar.
- * @param $comp_sport - the name of the sport section
- * @param &$sports - reference to the sport sections array used to keep track of
- * whether the sport has already been seen. It's important that the $sports is a
- * reference so that the changes made to $sports is reflected in the original array
- * @param $is_first_result - boolean indicating whether this is the first sport result
- * or not
- */
-function _print_new_section($comp_sport, &$sports, $is_first_result) {
-  if ( !array_key_exists($comp_sport, $sports) ): // New sport encountered 
-    if ($comp_sport):
-      // sport/comp name is not the empty string, so add to sports array  
-      $sports[$comp_sport] = true;
-      if (!$is_first_result) { // Not the first result
-        // So close the previous div before starting another for a different comp
-        echo "</div>";
-      }
-?>
-    <div class="forge-comp-results">
-      <div class="forge-comp-name"><?= $comp_sport; ?></div> 
-<?php
-    else:
-      $sports["Miscellaneous"] = true;
-?>
-    <div class="forge-comp-results">
-      <div class="forge-comp-name">Miscellaneous</div> 
-<?php
-    endif;
-  endif;
-}
 
 /**
  * Filter function to run through byline (if it exists) to ensure authors in the
@@ -200,8 +187,8 @@ function forge_custom_banner_query() {
     )
   );
   $field_data = array();
-  if ($banner_query->have_posts()):
-    while ($banner_query->have_posts()):
+  if ( $banner_query->have_posts() ):
+    while ( $banner_query->have_posts() ):
       $banner_query->the_post();
       $field_data['W'] = esc_html( do_shortcode('[ct id="_ct_text_57c8cfe6da990" property="value"]') ); //Wins field
       $field_data['D'] = esc_html( do_shortcode('[ct id="_ct_text_57c8d074955aa" property="value"]') ); //Draws field
@@ -244,7 +231,7 @@ add_shortcode('forge_get_banner', 'forge_custom_banner_query');
  */
 function _forge_debug($vars) {
   echo "---------------------------------------------- <br>";
-  if (is_array($vars)) {
+  if ( is_array($vars) ) {
     foreach ($vars as $var) {
       var_dump($var);
       echo "<br>";
