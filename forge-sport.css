@@ -20,16 +20,16 @@ div.logo { width: 25%; }
 
 .score { text-align: center; display: inline-block; width: 52px; }
 
-@media (min-width: 1166px) { #uni-crest { left: 50px; } }
-@media (max-width: 1000px) { div.header-right { float: none; margin: 0 auto; width: auto; }
+@media only screen and (min-width: 1166px) { #uni-crest { left: 50px; } }
+@media only screen and (max-width: 1000px) { div.header-right { float: none; margin: 0 auto; width: auto; }
   .uos-bucs { margin: 15px auto -15px; text-align: center; }
   #uni-crest { left: -5px; }
   .stat-label { text-align: left; } }
-@media (max-width: 568px) { .uos-bucs { font-size: 24px; }
+@media only screen and (max-width: 568px) { .uos-bucs { font-size: 24px; }
   #uni-crest { left: -30px; }
   #uni-stats { right: 20px; }
   .stat-label { width: 83px; } }
-@media (max-width: 450px) { .uos-bucs { font-size: 16px; }
+@media only screen and (max-width: 450px) { .uos-bucs { font-size: 16px; }
   .stat-label { width: 55px; }
   .score { width: 30px; } }
 /********** END Top Bar Stylings **********/
@@ -40,18 +40,24 @@ div.logo { width: 25%; }
 
 .forge-result-date { padding: 0 10px; display: inline-block; width: 43px; }
 
-.forge-single-result { padding: 8px 0; }
+.forge-single-result { padding: 8px 0; font-family: "Archivo Narrow"; }
 
 .forge-single-result a:hover { color: #ededed; }
 
-@media (max-width: 1000px) { .forge-single-result { text-align: center; } }
-.forge-home-team { width: 110px; display: inline-block; text-align: right; padding-right: 5px; }
+@media only screen and (max-width: 1000px) { .forge-single-result { text-align: center; } }
+.forge-home-team { width: 110px; padding-right: 5px; display: inline-block; text-align: right; }
 
-.forge-away-team { padding-left: 5px; display: inline-block; text-align: left; width: 110px; }
+.forge-away-team { width: 110px; padding-left: 5px; display: inline-block; text-align: left; }
 
 .forge-score-card { background-color: #fab123; color: #3e3e3e; font-weight: bold; display: inline-block; width: 51px; text-align: center; }
 
-@media (max-width: 375px) { .forge-score-card { height: 20px; }
+.forge-home-team, .forge-away-team { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+
+.forge-score-card, .forge-result-date { vertical-align: super; }
+
+@media only screen and (min-width: 425px) and (max-width: 1000px) { .forge-home-team, .forge-away-team { overflow: visible; }
+  .forge-score-card, .forge-result-date { vertical-align: baseline; } }
+@media only screen and (max-width: 375px) { .forge-score-card { height: 20px; }
   .forge-result-date { padding: 0; } }
 .forge-results-title { font-family: "Archivo Narrow"; font-size: 17px; background: #1e1e1e; color: #fab123; font-weight: 700; padding: 10px 0 10px 15px; }
 
@@ -62,7 +68,7 @@ div.esg-navigationbutton, .esg-pagination-button, .esg-pagination-button.selecte
 div.esg-navigationbutton:hover, .esg-pagination-button:hover, .esg-pagination-button.selected:hover, .esg-navigationbutton.esg-left:hover, .esg-navigationbutton.esg-right:hover { background-color: #fab123 !important; border-color: #fab123 !important; color: black !important; }
 
 /* Show only 3 nav page number buttons at most on very small screens */
-@media (max-width: 425px) { .esg-pagination div:nth-child(n+4) { display: none !important; } }
+@media only screen and (max-width: 425px) { .esg-pagination div:nth-child(n+4) { display: none !important; } }
 /** Blank author cover height fix **/
 .author-cover { height: 142px; }
 
@@ -79,9 +85,18 @@ div.esg-navigationbutton:hover, .esg-pagination-button:hover, .esg-pagination-bu
 
 .contact-email:hover { text-decoration: underline; }
 
-.so-widget-sow-image div.sow-image-container img.so-widget-image { width: 300px; height: 300px; -o-object-fit: cover; object-fit: cover; }
+.so-widget-sow-image div.sow-image-container img.so-widget-image { width: 300px; height: 300px; -o-object-fit: cover; object-fit: cover; font-family: 'object-fit: cover;'; }
 
 /** END of Get Involved Page styling **/
+/** Live Blog auxillary styling **/
+#pagestr { background-color: transparent !important; }
+#pagestr strong { color: #7e7e7e; }
+#pagestr strong:hover { color: #fab123; }
+
+[id*="lb_list"] div p:first-child { color: #fab123 !important; }
+[id*="lb_list"] div:hover p, [id*="lb_list"] div:hover a.comment:hover { color: black !important; }
+
+/** END of Live Blog auxilliary styling **/
 td, th { border: 1px solid #000000; padding: 2px; text-align: center; }
 
 .column-left { float: left; width: 45%; }
