@@ -41,8 +41,9 @@ div.logo {
   background: -o-linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%);
   background: -webkit-linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%);
   background: linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%);
-  right: 50px;
+  right: 40px;
   padding-left: 10px;
+  padding-right: 5px;
 }
 
 .header-right {
@@ -52,6 +53,7 @@ div.logo {
 .stat-label {
   display: inline-block;
   width: 105px;
+  padding-right: 8px;
 }
 
 .score {
@@ -62,7 +64,7 @@ div.logo {
 
 @media only screen and (min-width: 1166px) {
   #uni-crest {
-    left: 50px;
+    left: 55px;
   }
 }
 @media only screen and (max-width: 1000px) {
