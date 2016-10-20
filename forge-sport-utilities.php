@@ -1,14 +1,14 @@
 <?php
 /**
  * @package forge-sport-utilities
- * @version 3.4
+ * @version 3.4.1
  */
 /*
 Plugin Name: Forge Sport Utilities
 Plugin URI: https://github.com/darrenvong/forge-sport-utilities
 Description: A utility plugin that works with existing plugins to patch their shortcomings in order to 'make the Forge Sport website work'.
 Author: Darren Vong
-Version: 3.4
+Version: 3.4.1
 Author URI: https://github.com/darrenvong/
 */
 
@@ -20,7 +20,7 @@ function forge_remove_useless_metaboxes() {
   if ( !current_user_can('install_plugins') ) { //Checks whether user is an admin
     remove_meta_box('postcustom', $pages_to_exclude, 'normal'); //Custom Fields
     remove_meta_box('eg-meta-box', $pages_to_exclude, 'normal'); //Essential Grid
-    remove_meta_box('mymetabox_revslider_0', $pages_to_exclude, 'normal'); //Rev Slider 
+    remove_meta_box('mymetabox_revslider_0', $pages_to_exclude, 'normal'); //Rev Slider
   }
 }
 
@@ -30,6 +30,20 @@ function forge_enqueue_object_fit_polyfill() {
     wp_enqueue_script('object-fit-polyfill', plugin_dir_url(__FILE__) . 'js/ofi.browser.js');
 }
 add_action('wp_enqueue_scripts', 'forge_enqueue_object_fit_polyfill');
+
+/**
+ * Special patch to enable editors to post embed scripts (e.g. from live blog feeds)
+ * in their posts.
+ */
+function forge_blog_embed_patch( $string ) {
+  global $allowedposttags;
+  $allowedposttags["script"] = array(
+    "type" => array(),
+    "src" => array()
+  );
+  return $string;
+}
+add_filter('pre_kses', 'forge_blog_embed_patch');
 
 /**
  * A custom query which fetches the latest five sport match results that Forge Sport
@@ -90,7 +104,7 @@ function forge_custom_match_query() {
 
       // Largely based on `wpcm_get_match_comp` function in includes/wpcm-match-functions.php
       $comp = get_the_terms($post, 'wpcm_comp');
-      
+
       $comp_sport = $comp[0]->name;
 
       if ( $comp_sport ) {
@@ -199,12 +213,12 @@ function forge_custom_banner_query() {
     <div class="uos-bucs hidden">
       <span id="uni-crest">
         <?= $field_data["I"] ?>
-        in BUCS: 
+        in BUCS:
       </span>
       <span id="uni-stats">
         <div id="wins"><span class="stat-label">Wins</span><span class="score"><?= $field_data['W']; ?></span></div>
         <div id="draws"><span class="stat-label">Draws</span><span class="score"><?= $field_data['D']; ?></span></div>
-        <div id="losses"><span class="stat-label">Losses</span><span class="score"><?= $field_data['L']; ?></span></div>        
+        <div id="losses"><span class="stat-label">Losses</span><span class="score"><?= $field_data['L']; ?></span></div>
       </span>
     </div>
     <script>
@@ -235,7 +249,7 @@ function _forge_debug($vars) {
     foreach ($vars as $var) {
       var_dump($var);
       echo "<br>";
-    }    
+    }
   }
   else {
     var_dump($vars);
