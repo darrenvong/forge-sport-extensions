@@ -1,12 +1,12 @@
 <?php
 /**
- * @package forge-sport-utilities
+ * @package forge-sport-extensions
  * @version 3.4
  */
 /*
-Plugin Name: Forge Sport Utilities
-Plugin URI: https://github.com/darrenvong/forge-sport-utilities
-Description: A utility plugin that works with existing plugins to patch their shortcomings in order to 'make the Forge Sport website work'.
+Plugin Name: Forge Sport Extensions
+Plugin URI: https://github.com/darrenvong/forge-sport-extensions
+Description: An extension plugin that patches the shortcomings of other active plugins in order to 'make the Forge Sport website work'.
 Author: Darren Vong
 Version: 3.4
 Author URI: https://github.com/darrenvong/
