@@ -8,11 +8,11 @@ div.logo { width: 25%; }
 
 #uni-crest img { width: 35%; }
 
-#uni-crest, #uni-stats { display: inline-block; position: absolute; top: 50%; transform: translateY(-50%); }
+#uni-crest, #uni-stats { display: inline-block; position: absolute; top: 50%; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); }
 
 #uni-crest { left: 5px; color: #fab123; }
 
-#uni-stats { background-color: #fab123; background: -moz-linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%); background: -o-linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%); background: -webkit-linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%); background: linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%); right: 40px; padding-left: 10px; padding-right: 5px; }
+#uni-stats { background-color: #fab123; background: -webkit-linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%); background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 141, 5, 0.6)), color-stop(15%, #fab123), color-stop(96%, rgba(255, 141, 5, 0.6))); background: linear-gradient(rgba(255, 141, 5, 0.6), #fab123 15%, rgba(255, 141, 5, 0.6) 96%); right: 40px; padding-left: 10px; padding-right: 5px; }
 
 .header-right { width: 50%; }
 
@@ -33,6 +33,9 @@ div.logo { width: 25%; }
   .stat-label { width: 55px; }
   .score { width: 30px; } }
 /********** END Top Bar Stylings **********/
+/********** Nav item with no link fix **********/
+ul.main-menu li { cursor: pointer; }
+
 /********** Latest Results sidebar stylings ***********/
 .forge-comp-results { font-family: "Archivo Narrow", sans-serif; }
 
@@ -105,15 +108,15 @@ td, th { border: 1px solid #000000; padding: 2px; text-align: center; }
 
 .column-center { display: inline-block; width: 10%; }
 
-.uni-full { height: 40px; background-color: #fac123; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 120%; color: #000000; text-align: center; line-height: 40px; }
+.uni-full { height: 40px; background-color: #fac123; -webkit-box-shadow: 0px 0px 0px 1px black inset; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 120%; color: #000000; text-align: center; line-height: 40px; }
 
-.uni-half { height: 20px; background-color: #fac123; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 80%; color: #000000; text-align: center; line-height: 20px; }
+.uni-half { height: 20px; background-color: #fac123; -webkit-box-shadow: 0px 0px 0px 1px black inset; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 80%; color: #000000; text-align: center; line-height: 20px; }
 
-.hallam-full { height: 40px; background-color: #840e1f; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 120%; color: #e1e1e1; text-align: center; line-height: 40px; }
+.hallam-full { height: 40px; background-color: #840e1f; -webkit-box-shadow: 0px 0px 0px 1px black inset; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 120%; color: #e1e1e1; text-align: center; line-height: 40px; }
 
-.hallam-half { height: 20px; background-color: #840e1f; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 80%; color: #e1e1e1; text-align: center; line-height: 20px; }
+.hallam-half { height: 20px; background-color: #840e1f; -webkit-box-shadow: 0px 0px 0px 1px black inset; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 80%; color: #e1e1e1; text-align: center; line-height: 20px; }
 
-.toplay { height: 20px; background-color: #929292; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 100%; color: #000000; text-align: center; line-height: 20px; }
+.toplay { height: 20px; background-color: #929292; -webkit-box-shadow: 0px 0px 0px 1px black inset; box-shadow: 0px 0px 0px 1px black inset; font-family: Arial, Helvetica, sans-serif; font-size: 100%; color: #000000; text-align: center; line-height: 20px; }
 
 .instructions { clear: both; font-family: Arial, Helvetica, sans-serif; font-size: 100%; color: #e1e1e1; text-align: center; }
 
