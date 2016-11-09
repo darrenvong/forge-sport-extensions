@@ -1,5 +1,6 @@
-# Forge Sport Utilities
-A utility plugin that works with existing plugins by patching their shortcomings in order to 'make the Forge Sport website work'.
+# Forge Sport Extensions
+An extension plugin that patches the shortcomings of other active plugins on the Forge Sport website to improve its overall working capability.
+
 ## WordPress plugin dependencies
 * WP Club Manager version >= 1.4.4
 * Byline >= 0.25
