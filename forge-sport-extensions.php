@@ -1,7 +1,7 @@
 <?php
 /**
  * @package forge-sport-extensions
- * @version 3.4
+ * @version 3.4.1
  */
 /*
 Plugin Name: Forge Sport Extensions
@@ -91,34 +91,18 @@ function forge_custom_match_query() {
       // Largely based on `wpcm_get_match_comp` function in includes/wpcm-match-functions.php
       $comp = get_the_terms($post, 'wpcm_comp');
       
-      $comp_sport = $comp[0]->name;
+      // If name is empty string, defaults it to the string "Miscellaneous" instead
+      $comp_sport = ( $comp[0]->name )? $comp[0]->name : "Miscellaneous";
+      $sports[$comp_sport][$counter] = array(
+        "home_team" => $sides[0],
+        "away_team" => $sides[1],
+        "score" => $score[0],
+        "date" => $date
+      );
+      if ( $post_url = get_the_content() ) {
+        $sports[$comp_sport][$counter]["link"] = esc_url($post_url);
+      }
 
-      if ( $comp_sport ) {
-        /* Name is not the empty string, so use it as a key for looking up results
-         * in the sport */
-        $sports[$comp_sport][$counter] = array(
-          "home_team" => $sides[0],
-          "away_team" => $sides[1],
-          "score" => $score[0],
-          "date" => $date
-        );
-        if ( $post_url = get_the_content() ) {
-          $sports[$comp_sport][$counter]["link"] = esc_url($post_url);
-        }
-      }
-      else {
-        /* Empty string sport, so rather than displaying a blank box, defaults
-         * to "Miscellaneous" instead */
-        $sports["Miscellaneous"][$counter] = array(
-          "home_team" => $sides[0],
-          "away_team" => $sides[1],
-          "score" => $score[0],
-          "date" => $date
-        );
-        if ( $post_url = get_the_content() ) {
-          $sports["Miscellaneous"][$counter]["link"] = esc_url($post_url);
-        }
-      }
       $counter++;
     endwhile;
   endif;
@@ -194,7 +178,6 @@ function forge_custom_banner_query() {
       $field_data['D'] = esc_html( do_shortcode('[ct id="_ct_text_57c8d074955aa" property="value"]') ); //Draws field
       $field_data['L'] = esc_html( do_shortcode('[ct id="_ct_text_57c8d0f4716d3" property="value"]') ); //Losses field
       $field_data['I'] = do_shortcode('[ct id="_ct_upload_57e29ab501d0e" property="value"]'); // Logo image upload field
-      $banner_html = "<div class='uos-bucs'> UoS in BUCS: Win {$field_data['W']}, Draw {$field_data['D']}, Lost {$field_data['L']}</div>";
 ?>
     <div class="uos-bucs hidden">
       <span id="uni-crest">
