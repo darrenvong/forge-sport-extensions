@@ -12,7 +12,7 @@ Version: 3.4
 Author URI: https://github.com/darrenvong/
 */
 
-if ( !defined('ABSPATH') ) wp_die();
+if ( !defined('ABSPATH') ) exit;
 
 add_action('do_meta_boxes', 'forge_remove_useless_metaboxes');
 function forge_remove_useless_metaboxes() {
